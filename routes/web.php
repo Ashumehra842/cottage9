@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AbcController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\AdminMiddleware;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,3 +22,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::group(['middleware' => 'auth'], function(){
+
+    Route::group(['prefix' => 'admin','middleware'=>'admin','as'=>'admin.'], function(){
+        Route::get('post',[AbcController::class, "index"]);
+
+    });
+});
+
